@@ -11,18 +11,14 @@ def test_relative_days_before():
 def test_relative_days_after():
     assert parse("3 days after 2026-05-13") == date(2026, 5, 16)
 
-# def test_next_tuesday():
-#     today = date(2026, 5, 11)  # Monday
-#     assert parse("next Tuesday", today=today) == date(2026, 5, 19)
+def test_next_tuesday():
+    today = date(2026, 5, 11)  # Monday
+    assert parse("next Tuesday", today=today) == date(2026, 5, 12)
 
-# def test_years_months():
-#     today = date(2026, 5, 1)
-#     assert parse("1 year and 2 months after yesterday", 
-#                  today=today) == date(2027, 6, 30)
-    
-# def test_end_of_month():
-#     today = date(2026, 5, 15)
-#     assert parse("end of month", today=today) == date(2026, 5, 31)
+def test_years_months():
+    today = date(2026, 5, 1)
+    assert parse("1 year and 2 months after yesterday", 
+                 today=today) == date(2027, 6, 30)
 
 def test_last_monday():
     today = date(2026, 5, 13) # Wednesday
@@ -40,10 +36,6 @@ def test_yesterday():
     today = date(2026, 5, 1)
     assert parse("yesterday", today=today) == date(2026, 4, 30)
 
-
-
-# Add 5+ more tests covering: "tomorrow", "yesterday", "in X days", 
-# "last Monday", "X weeks from now", "end of month", etc.
 
 """Tests for nldate.parser.parse()"""
 import pytest

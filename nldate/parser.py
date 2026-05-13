@@ -7,8 +7,8 @@ from __future__ import annotations
 
 import re
 from datetime import date, timedelta
-from dateutil.relativedelta import relativedelta  # type: ignore[import-untyped]
-from typing import Optional, cast
+from dateutil.relativedelta import relativedelta
+from typing import Optional
 
 
 # ---------------------------------------------------------------------------
@@ -180,7 +180,7 @@ def _apply_chunks(base: date, chunks: list[tuple[str, str]], forward: bool) -> d
         elif u == "day":
             td_days += n
     sign = 1 if forward else -1
-    result = cast(date, base + relativedelta(**{k: v * sign for k, v in rd_kwargs.items()}))
+    result = base + relativedelta(**{k: v * sign for k, v in rd_kwargs.items()})
     result += timedelta(days=td_days * sign)
     return result
 
@@ -203,7 +203,7 @@ def _parse_offset(s: str, today: date) -> Optional[date]:
     m = _SIMPLE_OFFSET_RE.match(s)
     if m:
         chunk_str = m.group(1)
-        suffix = (m.group(2) or "").lower()
+        suffix = (m.group(m.lastindex) or "").lower()
         chunks = _CHUNK_RE.findall(chunk_str)
         if chunks:
             forward = suffix not in ("ago",)
