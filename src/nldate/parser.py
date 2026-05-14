@@ -237,7 +237,7 @@ def _parse_offset(s: str, today: date) -> Optional[date]:
     m = _SIMPLE_OFFSET_RE.match(s)
     if m:
         chunk_str = m.group(1)
-        suffix = (m.group(m.lastindex) if m.lastindex is not None else "")
+        suffix = m.group(m.lastindex) if m.lastindex is not None else ""
         suffix = suffix.lower()
         chunks = _CHUNK_RE.findall(chunk_str)
         if chunks:
