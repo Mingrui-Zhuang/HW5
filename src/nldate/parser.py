@@ -143,6 +143,27 @@ def _parse_relative_weekday(s: str, today: date) -> Optional[date]:
         return today + timedelta(days=delta)
 
 
+# "the day after tomorrow", "the day before yesterday"
+_THE_DAY_RE = re.compile(r"^the day (after|before)\s+(.+)$")
+
+
+def _parse_the_day(s: str, today: date) -> Optional[date]:
+    """Parse 'the day after/before <anchor>' expressions."""
+    m = _THE_DAY_RE.match(s)
+    if not m:
+        return None
+    direction = m.group(1)  # "after" or "before"
+    anchor_str = m.group(2).strip()
+
+    # Recursively parse the anchor
+    anchor = parse(anchor_str, today=today)
+
+    if direction == "after":
+        return anchor + timedelta(days=1)
+    else:  # "before"
+        return anchor - timedelta(days=1)
+
+
 # Absolute: "Dec 1, 2025" / "1 Dec 2025" / "December 1 2025" / "2025-12-01" / "12/01/2025"
 _ABS_MONTH_NAME_RE = re.compile(
     r"^(?:(\d{1,2})\s+)?("
@@ -314,12 +335,17 @@ def parse(s: str, today: Optional[date] = None) -> date:
     if result is not None:
         return result
 
-    # 3. Absolute date
+    # 3. "the day after/before" expressions
+    result = _parse_the_day(cleaned, today)
+    if result is not None:
+        return result
+
+    # 4. Absolute date
     result = _parse_absolute(cleaned)
     if result is not None:
         return result
 
-    # 4. Offset (handles combinations via multi-chunk regex)
+    # 5. Offset (handles combinations via multi-chunk regex)
     result = _parse_offset(cleaned, today)
     if result is not None:
         return result
