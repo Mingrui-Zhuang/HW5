@@ -153,7 +153,7 @@ _ABS_MONTH_NAME_RE2 = re.compile(
     r"^(" + "|".join(_MONTHS) + r")\.?\s+(\d{1,2})(?:st|nd|rd|th)?,?\s*(\d{4})$"
 )
 _ABS_ISO_RE = re.compile(r"^(\d{4})-(\d{2})-(\d{2})$")
-_ABS_SLASH_YYYY_MM_DD_RE = re.compile(r"^(\d{4})/(\d{2})/(\d{2})$")
+_ABS_SLASH_YYYY_MM_DD_RE = re.compile(r"^(\d{4})/(\d{1,2})/(\d{1,2})$")
 _ABS_SLASH_RE = re.compile(r"^(\d{1,2})/(\d{1,2})/(\d{4})$")
 _ABS_DAY_MONTH_YEAR_RE = re.compile(
     r"^(\d{1,2})(?:st|nd|rd|th)?\s+(" + "|".join(_MONTHS) + r")\.?\s+(\d{4})$"
